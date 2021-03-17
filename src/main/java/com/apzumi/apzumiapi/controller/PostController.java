@@ -18,9 +18,13 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public Iterable<Post> list(@RequestBody String title) {
+    public Iterable<Post> search(@RequestBody String title) {
         return postService.findAll(title);
     }
 
+    @DeleteMapping(path="/posts/{id}")
+    public void delete(@PathVariable Long id) {
+        postService.deleteById(id);
+    }
 
 }
