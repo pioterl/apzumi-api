@@ -1,10 +1,11 @@
-package com.apzumi.apzumiapi;
+package com.apzumi.apzumiapi.controller;
 
+import com.apzumi.apzumiapi.domain.Post;
+import com.apzumi.apzumiapi.repository.PostRepository;
+import com.apzumi.apzumiapi.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -14,8 +15,8 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/posts")
-    public List<Object> getPosts() {
-        return postService.downloadPosts();
+    public Iterable<Post> list() {
+        return postService.list();
     }
 
 }
