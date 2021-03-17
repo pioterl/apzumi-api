@@ -24,7 +24,7 @@ public class PostService {
 
     @Scheduled(fixedRate = 43200000)
     public void downloadPosts() {
-        String url = "https://jsonplaceholder.typicode.com/postss";
+        String url = "https://jsonplaceholder.typicode.com/posts";
         try {
             Post[] posts = restTemplate.getForObject(url, Post[].class);
             List<Post> downloadedPosts = Optional.ofNullable(posts).map(Arrays::asList).orElseGet(ArrayList::new);
@@ -38,6 +38,10 @@ public class PostService {
 
     public Iterable<Post> listAll() {
         return postRepository.findAll();
+    }
+
+    public Iterable<Post> findAll(String title) {
+        return postRepository.findAllByTitleContains(title);
     }
 
     public void saveAll(List<Post> post) {
