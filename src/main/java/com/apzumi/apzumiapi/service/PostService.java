@@ -57,7 +57,7 @@ public class PostService {
         Post existingPost = postRepository.findById(post.getId()).orElse(null);
         existingPost.setTitle(post.getTitle());
         existingPost.setBody(post.getBody());
-        postRepository.save(post);
+        existingPost.setUserId(existingPost.getUserId());
         return postRepository.save(existingPost);
     }
 
