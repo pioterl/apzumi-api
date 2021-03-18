@@ -23,8 +23,13 @@ public class PostController {
     }
 
     @DeleteMapping(path="/posts/{id}")
-    public void delete(@PathVariable Long id) {
-        postService.deleteById(id);
+    public String delete(@PathVariable Long id) {
+        return postService.deleteById(id);
+    }
+
+    @PutMapping("/posts")
+    public Post updatePost(@RequestBody Post post) {
+        return postService.updatePost(post);
     }
 
 }

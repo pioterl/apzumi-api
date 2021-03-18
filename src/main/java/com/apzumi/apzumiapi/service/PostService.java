@@ -48,7 +48,17 @@ public class PostService {
         postRepository.saveAll(post);
     }
 
-    public void deleteById(Long id) {
+    public String deleteById(Long id) {
         postRepository.deleteById(id);
+        return "Deleting post with ID " + id;
     }
+
+    public Post updatePost(Post post) {
+        Post existingPost = postRepository.findById(post.getId()).orElse(null);
+        existingPost.setTitle(post.getTitle());
+        existingPost.setBody(post.getBody());
+        postRepository.save(post);
+        return postRepository.save(existingPost);
+    }
+
 }
