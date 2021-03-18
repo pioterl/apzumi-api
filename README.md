@@ -13,3 +13,4 @@
 
 # Whats not working?
 - I'm currently stuck on updating only unmodified fields in database after downloading new JSON from API. I just need more time for this and I will try again next week.
+- I also forgot about tests, will do it also next week
