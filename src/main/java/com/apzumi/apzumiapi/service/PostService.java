@@ -22,7 +22,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final RestTemplate restTemplate;
 
-    @Scheduled(fixedRate = 43200000)
+    @Scheduled(fixedRate = 86400000)
     public void downloadPosts() {
         String url = "https://jsonplaceholder.typicode.com/posts";
         try {
