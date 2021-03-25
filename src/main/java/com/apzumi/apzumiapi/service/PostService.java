@@ -22,12 +22,12 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final RestTemplate restTemplate;
+    private final static String API_URL = "https://jsonplaceholder.typicode.com/posts";
 
     @Bean
     public void downloadPostsToDb() {
-        String url = "https://jsonplaceholder.typicode.com/posts";
         try {
-            Post[] posts = restTemplate.getForObject(url, Post[].class);
+            Post[] posts = restTemplate.getForObject(API_URL, Post[].class);
             List<Post> downloadedPosts = Optional.ofNullable(posts).map(Arrays::asList).orElseGet(ArrayList::new);
             saveAll(downloadedPosts);
             System.out.println("Posts saved to database!");
@@ -39,10 +39,8 @@ public class PostService {
 
     @Scheduled(cron = "0 0 23 * * *", zone="Europe/Warsaw")
     public void downloadPosts() {
-        System.out.println("NOW");
-        String url = "https://jsonplaceholder.typicode.com/posts";
         try {
-            Post[] posts = restTemplate.getForObject(url, Post[].class);
+            Post[] posts = restTemplate.getForObject(API_URL, Post[].class);
             for (Post apiNext : Optional.ofNullable(posts).map(Arrays::asList).orElseGet(ArrayList::new)) {
                 for (Post dbNext : postRepository.findAll()) {
                     if (apiNext.getId().equals(dbNext.getId())) {
@@ -52,7 +50,6 @@ public class PostService {
                     }
                 }
             }
-
         } catch (HttpStatusCodeException exception) {
             int statusCode = exception.getStatusCode().value();
             System.out.println("JSON API URL returned " + statusCode);
@@ -72,8 +69,12 @@ public class PostService {
     }
 
     public String deleteById(Long id) {
-        postRepository.deleteById(id);
-        return "Deleting post with ID " + id;
+        if (postRepository.existsById(id)) {
+            postRepository.deleteById(id);
+            return "Deleting post with ID " + id;
+        } else {
+            return "There is no post with ID " + id;
+        }
     }
 
     public Post updatePost(Post post) {
