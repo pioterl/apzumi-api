@@ -3,6 +3,7 @@ package com.apzumi.apzumiapi.service;
 import com.apzumi.apzumiapi.domain.Post;
 import com.apzumi.apzumiapi.repository.PostRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final RestTemplate restTemplate;
 
-    @Scheduled(fixedRate = 86400000)
+    @Bean
     public void downloadPostsToDb() {
         String url = "https://jsonplaceholder.typicode.com/posts";
         try {
@@ -36,6 +37,7 @@ public class PostService {
         }
     }
 
+    @Scheduled(fixedRate = 86400000)
     public void downloadPosts() {
         String url = "https://jsonplaceholder.typicode.com/posts";
         try {
