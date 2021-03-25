@@ -1,7 +1,7 @@
 package com.apzumi.apzumiapi.service;
 
-import com.apzumi.apzumiapi.repository.PostRepository;
 import com.apzumi.apzumiapi.domain.Post;
+import com.apzumi.apzumiapi.repository.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -40,7 +43,9 @@ public class PostService {
             for (Post apiNext : Optional.ofNullable(posts).map(Arrays::asList).orElseGet(ArrayList::new)) {
                 for (Post dbNext : postRepository.findAll()) {
                     if (apiNext.getId().equals(dbNext.getId())) {
-                        postRepository.save(apiNext);
+                        if(apiNext.getTitle().equals(dbNext.getTitle()) && apiNext.getBody().equals(dbNext.getBody())) {
+                            postRepository.save(apiNext);
+                        }
                     }
                 }
             }
