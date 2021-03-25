@@ -37,15 +37,16 @@ public class PostService {
         }
     }
 
-    @Scheduled(fixedRate = 86400000)
+    @Scheduled(cron = "0 0 23 * * *", zone="Europe/Warsaw")
     public void downloadPosts() {
+        System.out.println("NOW");
         String url = "https://jsonplaceholder.typicode.com/posts";
         try {
             Post[] posts = restTemplate.getForObject(url, Post[].class);
             for (Post apiNext : Optional.ofNullable(posts).map(Arrays::asList).orElseGet(ArrayList::new)) {
                 for (Post dbNext : postRepository.findAll()) {
                     if (apiNext.getId().equals(dbNext.getId())) {
-                        if(apiNext.getTitle().equals(dbNext.getTitle()) && apiNext.getBody().equals(dbNext.getBody())) {
+                        if (apiNext.getTitle().equals(dbNext.getTitle()) && apiNext.getBody().equals(dbNext.getBody())) {
                             postRepository.save(apiNext);
                         }
                     }
