@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -23,7 +20,7 @@ public class PostService {
     private final RestTemplate restTemplate;
 
     @Scheduled(fixedRate = 86400000)
-    public void downloadPosts() {
+    public void downloadPostsToDb() {
         String url = "https://jsonplaceholder.typicode.com/posts";
         try {
             Post[] posts = restTemplate.getForObject(url, Post[].class);
@@ -32,7 +29,25 @@ public class PostService {
             System.out.println("Posts saved to database!");
         } catch (HttpStatusCodeException exception) {
             int statusCode = exception.getStatusCode().value();
-            System.out.println("JSON API URL returns: " + statusCode);
+            System.out.println("JSON API URL returned " + statusCode);
+        }
+    }
+
+    public void downloadPosts() {
+        String url = "https://jsonplaceholder.typicode.com/posts";
+        try {
+            Post[] posts = restTemplate.getForObject(url, Post[].class);
+            for (Post apiNext : Optional.ofNullable(posts).map(Arrays::asList).orElseGet(ArrayList::new)) {
+                for (Post dbNext : postRepository.findAll()) {
+                    if (apiNext.getId().equals(dbNext.getId())) {
+                        postRepository.save(apiNext);
+                    }
+                }
+            }
+
+        } catch (HttpStatusCodeException exception) {
+            int statusCode = exception.getStatusCode().value();
+            System.out.println("JSON API URL returned " + statusCode);
         }
     }
 

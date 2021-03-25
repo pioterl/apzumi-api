@@ -13,6 +13,12 @@ public class PostController {
 
     @GetMapping("/posts")
     public Iterable<Post> list() {
+        postService.downloadPostsToDb();
+        return postService.listAll();
+    }
+
+    @GetMapping("/posts2")
+    public Iterable<Post> list2() {
         postService.downloadPosts();
         return postService.listAll();
     }
