@@ -1,5 +1,6 @@
 package com.apzumi.apzumiapi.controller;
 
+import com.apzumi.apzumiapi.domain.Post;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,5 +25,17 @@ class PostControllerTest {
 
     @Test
     void updatePost() {
+        Post existingPost = new Post();
+        existingPost.setId(2L);
+        existingPost.setTitle("modified");
+        existingPost.setBody("modified");
+
+        Post notExistingPost = new Post();
+        notExistingPost.setId(0L);
+        notExistingPost.setTitle("modified");
+        notExistingPost.setBody("modified");
+
+        assertEquals("Updating post with ID 2", postController.updatePost(existingPost));
+        assertEquals("There is no post with ID 0", postController.updatePost(notExistingPost));
     }
 }
