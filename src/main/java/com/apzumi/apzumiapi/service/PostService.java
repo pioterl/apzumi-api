@@ -77,16 +77,16 @@ public class PostService {
         }
     }
 
-    public Post updatePost(Post post) {
+    public String updatePost(Post post) {
         if (postRepository.existsById(post.getId())) {
             Post existingPost = postRepository.findById(post.getId()).orElse(null);
             existingPost.setTitle(post.getTitle());
             existingPost.setBody(post.getBody());
             existingPost.setUserId(existingPost.getUserId());
-            return postRepository.save(existingPost);
+            postRepository.save(existingPost);
+            return "Updating post with ID " + post.getId();
         } else {
-            System.out.println("There is no post with ID " + post.getId());
-            return null;
+            return "There is no post with ID " + post.getId();
         }
     }
 }
