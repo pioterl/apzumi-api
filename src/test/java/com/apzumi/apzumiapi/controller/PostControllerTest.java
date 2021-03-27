@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class PostControllerTest {
@@ -17,15 +17,15 @@ class PostControllerTest {
     void shouldDeletePostThenFindNone() {
         Long existingNumber = 1L;
 
-        assertEquals("Deleting post with ID 1", postController.delete(existingNumber));
-        assertEquals("There is no post with ID 1", postController.delete(existingNumber));
+        assertThat(postController.delete(existingNumber)).isEqualTo("Deleting post with ID 1");
+        assertThat(postController.delete(existingNumber)).isEqualTo("There is no post with ID 1");
     }
 
     @Test
-    void shouldFindWrongId() {
+    void shouldNotFindPostToDelete() {
         Long notExistingNumber = 101L;
 
-        assertEquals("There is no post with ID 101", postController.delete(notExistingNumber));
+        assertThat(postController.delete(notExistingNumber)).isEqualTo("There is no post with ID 101");
     }
 
     @Test
@@ -35,16 +35,16 @@ class PostControllerTest {
         existingPost.setTitle("modified");
         existingPost.setBody("modified");
 
-        assertEquals("Updating post with ID 2", postController.updatePost(existingPost));
+        assertThat(postController.updatePost(existingPost)).isEqualTo("Updating post with ID 2");
     }
 
     @Test
-    void shouldNotFindPost() {
+    void shouldNotFindPostToUpdate() {
         Post notExistingPost = new Post();
         notExistingPost.setId(0L);
         notExistingPost.setTitle("modified");
         notExistingPost.setBody("modified");
 
-        assertEquals("There is no post with ID 0", postController.updatePost(notExistingPost));
+        assertThat(postController.updatePost(notExistingPost)).isEqualTo("There is no post with ID 0");
     }
 }
