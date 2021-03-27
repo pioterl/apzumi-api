@@ -13,7 +13,7 @@ public class PostController {
 
     @GetMapping("/posts")
     public Iterable<Post> list() {
-        postService.downloadPosts();
+        postService.downloadPostAndCompare();
         return postService.listAll();
     }
 

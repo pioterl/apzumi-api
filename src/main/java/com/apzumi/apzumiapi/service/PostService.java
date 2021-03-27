@@ -25,7 +25,7 @@ public class PostService {
     private final static String API_URL = "https://jsonplaceholder.typicode.com/posts";
 
     @Bean
-    public void downloadPostsToDb() {
+    public void downloadPostsAtStart() {
         try {
             Post[] posts = restTemplate.getForObject(API_URL, Post[].class);
             List<Post> downloadedPosts = Optional.ofNullable(posts).map(Arrays::asList).orElseGet(ArrayList::new);
@@ -38,7 +38,7 @@ public class PostService {
     }
 
     @Scheduled(cron = "0 0 23 * * *", zone="Europe/Warsaw")
-    public void downloadPosts() {
+    public void downloadPostAndCompare() {
         try {
             Post[] posts = restTemplate.getForObject(API_URL, Post[].class);
             for (Post apiNext : Optional.ofNullable(posts).map(Arrays::asList).orElseGet(ArrayList::new)) {
