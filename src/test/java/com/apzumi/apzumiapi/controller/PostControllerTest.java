@@ -4,7 +4,6 @@ import com.apzumi.apzumiapi.domain.Post;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -30,21 +29,25 @@ class PostControllerTest {
 
     @Test
     void shouldUpdatePost() {
-        Post existingPost = new Post();
-        existingPost.setId(2L);
-        existingPost.setTitle("modified");
-        existingPost.setBody("modified");
+        Post existingPost = new Post(1, 2L, "modified", "modified");
 
         assertThat(postController.updatePost(existingPost)).isEqualTo("Updating post with ID 2");
     }
 
     @Test
     void shouldNotFindPostToUpdate() {
-        Post notExistingPost = new Post();
-        notExistingPost.setId(0L);
-        notExistingPost.setTitle("modified");
-        notExistingPost.setBody("modified");
+        Post notExistingPost = new Post(1, 0L, "modified", "modified");
 
         assertThat(postController.updatePost(notExistingPost)).isEqualTo("There is no post with ID 0");
+    }
+
+    @Test
+    void shouldFindPostByString() {
+        assertThat(postController.search("facere")).isNotEmpty();
+    }
+
+    @Test
+    void shouldNotBeEmpty() {
+        assertThat(postController.list()).isNotEmpty();
     }
 }

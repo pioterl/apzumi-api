@@ -38,7 +38,7 @@ public class PostService {
     }
 
     @Scheduled(cron = "0 0 23 * * *", zone="Europe/Warsaw")
-    public void downloadPostAndCompare() {
+    public String downloadPostAndCompare() {
         try {
             Post[] posts = restTemplate.getForObject(API_URL, Post[].class);
             for (Post apiNext : Optional.ofNullable(posts).map(Arrays::asList).orElseGet(ArrayList::new)) {
@@ -46,14 +46,16 @@ public class PostService {
                     if (apiNext.getId().equals(dbNext.getId())) {
                         if (apiNext.getTitle().equals(dbNext.getTitle()) && apiNext.getBody().equals(dbNext.getBody())) {
                             postRepository.save(apiNext);
+                            return "Posts compared and saved to database";
                         }
                     }
                 }
             }
         } catch (HttpStatusCodeException exception) {
             int statusCode = exception.getStatusCode().value();
-            System.out.println("JSON API URL returned " + statusCode);
+            return "JSON API URL returned " + statusCode;
         }
+        return null;
     }
 
     public Iterable<Post> listAll() {
