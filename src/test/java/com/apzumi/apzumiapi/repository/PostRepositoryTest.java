@@ -26,4 +26,20 @@ class PostRepositoryTest {
         assertThat(postRepository.findById(1L)).isNotEmpty();
     }
 
+    @Test
+    void shouldFindAllPost() {
+        Post post1 = new Post(1, 1L, "tytuł1", "treść1");
+        postRepository.save(post1);
+
+        Post post2 = new Post(1, 2L, "tytuł2", "treść2");
+        postRepository.save(post2);
+
+        Post post3 = new Post(1, 3L, "tytuł3", "treść3");
+        postRepository.save(post3);
+
+        Iterable<Post> posts = postRepository.findAll();
+
+        assertThat(posts).hasSize(3).contains(post1, post2, post3);
+    }
+
 }

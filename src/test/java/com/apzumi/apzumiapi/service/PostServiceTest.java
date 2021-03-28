@@ -16,4 +16,5 @@ class PostServiceTest {
     void shouldDownloadCompareAndSavePostsToDb() {
         assertThat(postService.downloadPostAndCompare()).isEqualTo("Posts compared and saved to database");
     }
+
 }
