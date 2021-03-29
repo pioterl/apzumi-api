@@ -1,3 +1,14 @@
+# Update 29.03.2021
+- now app compares downloaded posts from JSON with posts saved in database and dont overwrite modified or deleted items
+- added exceptions handling for posts with wrong or not existing ID (for delete or update)
+- now app updates every 24 hours with cron rather than fixedrate
+- also added some tests for rest controller, JPA and service layer
+
+# TODO (things I want to improve)
+- use maps for duplicate checking after update (now i have loop in loop and if ind if, it works, but I'm not so proud of it ;)
+- do something with two methods downloadPostsAtStart() and downloadPostAndCompare(), which in some part do the same thing
+- i also want to change API to something dynamic (now downloaded posts are always the same), so now downloadPostAndCompare() does almost nothing. Its just overwriting same content to database. But these are requirements of the recruiting task.
+
 # Whats working and how to use it?
 - app downloads JSON API every 24 hours
 - app saves all posts to database (H2)
@@ -11,6 +22,6 @@
     }
 - userId is written to database, but hidden in REST API.
 
-# Whats not working?
-- I'm currently stuck on updating only unmodified fields in database after downloading new JSON from API. I just need more time for this and I will try again next week.
-- I also forgot about tests, will do it also next week
+~~# Whats not working?~~
+~~- I'm currently stuck on updating only unmodified fields in database after downloading new JSON from API. I just need more time for this and I will try again next week.~~
+~~- I also forgot about tests, will do it also next week~~
