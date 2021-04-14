@@ -1,3 +1,7 @@
+# Update 14.04.2021
+- added DTO layer
+- added Swagger-ui (http://localhost:8080/swagger-ui.html)
+
 # Update 29.03.2021
 - now app compares downloaded posts from JSON with posts saved in database and dont overwrite modified or deleted items
 - added exceptions handling for posts with wrong or not existing ID (for delete or update)
