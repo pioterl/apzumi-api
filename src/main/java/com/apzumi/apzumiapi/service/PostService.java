@@ -1,6 +1,7 @@
 package com.apzumi.apzumiapi.service;
 
 import com.apzumi.apzumiapi.domain.Post;
+import com.apzumi.apzumiapi.domain.PostDTO;
 import com.apzumi.apzumiapi.repository.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @AllArgsConstructor
@@ -37,7 +40,7 @@ public class PostService {
         }
     }
 
-    @Scheduled(cron = "0 0 23 * * *", zone="Europe/Warsaw")
+    @Scheduled(cron = "0 0 23 * * *", zone = "Europe/Warsaw")
     public String downloadPostAndCompare() {
         try {
             Post[] posts = restTemplate.getForObject(API_URL, Post[].class);
@@ -58,8 +61,12 @@ public class PostService {
         return null;
     }
 
-    public Iterable<Post> listAll() {
-        return postRepository.findAll();
+    public List<PostDTO> listAll() {
+        Iterable<Post> iterable = postRepository.findAll();
+        return StreamSupport.stream(iterable.spliterator(), false).collect(Collectors.toList())
+                .stream()
+                .map(p -> new PostDTO(p.getId(), p.getTitle(), p.getBody()))
+                .collect(Collectors.toList());
     }
 
     public Iterable<Post> findAll(String title) {
