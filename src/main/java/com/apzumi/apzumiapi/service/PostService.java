@@ -69,8 +69,11 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public Iterable<Post> findAll(String title) {
-        return postRepository.findAllByTitleContains(title);
+    public List<PostDTO> findAll(String title) {
+        return postRepository.findAllByTitleContains(title)
+                .stream()
+                .map(p -> new PostDTO(p.getId(), p.getTitle(), p.getBody()))
+                .collect(Collectors.toList());
     }
 
     public void saveAll(List<Post> post) {

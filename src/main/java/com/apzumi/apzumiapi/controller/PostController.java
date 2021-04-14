@@ -21,7 +21,7 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public Iterable<Post> search(@RequestBody String title) {
+    public List<PostDTO> search(@RequestBody String title) {
         return postService.findAll(title);
     }
 
